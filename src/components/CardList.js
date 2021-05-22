@@ -2,11 +2,9 @@ import React from "react";
 import Card from "./Card";
 
 const CardList = ({ robots = [] }) => {
-  const cardsArray = robots.map((robot) => (
-    <Card key={robot.id} robot={robot} />
-  ));
+  const cards = robots.map((robot) => <Card key={robot.id} robot={robot} />);
 
-  return <div>{cardsArray}</div>;
+  return <div>{cards}</div>;
 };
 
 export default CardList;
