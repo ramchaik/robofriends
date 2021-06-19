@@ -4,10 +4,21 @@ import ErrorBoundry from "../components/ErrorBoundry";
 import Scroll from "../components/Scroll";
 import SearchBox from "../components/SearchBox";
 import "./App.css";
+import { connect } from "react-redux";
+import { setSearchField } from "../actions";
 
-function App() {
+const mapStateToProps = (state) => ({
+  searchField: state.searchField,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+});
+
+
+function App(props) {
   const [robots, setRobots] = useState([]);
-  const [searchfield, setSearchfield] = useState("");
+  const { searchField, onSearchChange } = props;
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/users`)
@@ -15,10 +26,8 @@ function App() {
       .then((robots) => setRobots(robots));
   }, []);
 
-  const onSearchChange = (event) => setSearchfield(event.target.value);
-
   const filteredRobots = robots.filter((robot) =>
-    robot.name.toLowerCase().includes(searchfield.toLowerCase())
+    robot.name.toLowerCase().includes(searchField.toLowerCase())
   );
 
   return !robots.length ? (
@@ -36,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
